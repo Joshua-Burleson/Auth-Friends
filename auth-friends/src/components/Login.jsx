@@ -1,7 +1,11 @@
 import React, {useState} from 'react';
+import { useDispatch } from 'react-redux';
+
+import { login } from '../actions/friendActions';
 import axiosWithAuth from '../resources/axiosWithAuth';
 
 const Login = props => {
+    const dispatch = useDispatch();
     const [formState, setFormState] = useState({username: '', password: ''});
 
     const handleChange = event => {
@@ -11,11 +15,7 @@ const Login = props => {
 
     const handleSubmit = event => {
         event.preventDefault();
-        axiosWithAuth().post('/login', formState)
-            .then(res => {
-                localStorage.setItem('token', res.data.payload);
-            })
-            .catch(err => console.log('Oops! ', err))
+        dispatch(login(formState, props.history));
     }
 
     return (
